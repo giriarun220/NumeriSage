@@ -3,14 +3,14 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Numerology Calculator</title>
+   <title>Numerology Calculator - Home</title>
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
    <div class="container">
       <h1>Numerology Calculator</h1>
-      <form id="numerologyForm">
+      <form id="numerologyForm" action="dashboard.html">
          <div class="mb-3">
             <label for="nameInput" class="form-label">Name</label>
             <input type="text" class="form-control" id="nameInput" placeholder="Enter your name" required>
@@ -21,43 +21,8 @@
          </div>
          <button type="submit" class="btn btn-primary">Calculate</button>
       </form>
-      <div id="results" class="mt-4"></div>
-      <div id="numberDetails" class="mt-4"></div>
    </div>
    <!-- Bootstrap JS -->
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   <script>
-      document.getElementById('numerologyForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form submission
-      
-        // Retrieve user input
-        const name = document.getElementById('nameInput').value;
-        const birthdate = document.getElementById('birthdateInput').value;
-      
-        // Perform calculations and display results
-        const destinyNumber = calculateDestinyNumber(birthdate);
-        const lifePathNumber = calculateLifePathNumber(birthdate);
-        const soulUrgeNumber = calculateSoulUrgeNumber(name);
-      
-        const resultsContainer = document.getElementById('results');
-        resultsContainer.innerHTML = `
-          <h2>Results</h2>
-          <p><strong>Destiny Number:</strong> ${destinyNumber}</p>
-          <p><strong>Life Path Number:</strong> ${lifePathNumber}</p>
-          <p><strong>Soul Urge Number:</strong> ${soulUrgeNumber}</p>
-        `;
-
-        const numberDetailsContainer = document.getElementById('numberDetails');
-        numberDetailsContainer.innerHTML = `
-          <h2>Number Details</h2>
-          <p><strong>Destiny Number:</strong> ${getNumberExplanation(destinyNumber)}</p>
-          <p><strong>Life Path Number:</strong> ${getNumberExplanation(lifePathNumber)}</p>
-          <p><strong>Soul Urge Number:</strong> ${getNumberExplanation(soulUrgeNumber)}</p>
-        `;
-      });
-      
-      // Rest of the code...
-
-   </script>
 </body>
 </html>
