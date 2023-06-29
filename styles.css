@@ -1,1 +1,147 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #1100fd;
+  text-align: center;
+  margin-top: 30px;
+}
+
+form {
+  margin-top: 20px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #ffd000;
+  color: #fff;
+  border: 2px solid #000000;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+}
+button:hover {
+  padding: 10px 20px;
+  background-color: #02ff17;
+  color: #030000;
+  border: 2px solid #000000;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+}
+
+#results {
+  margin-top: 40px;
+}
+
+//* Your existing CSS code */
+
+/* Add this part to include the updated CSS code */
+
+.result-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-section h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.result-section p {
+  margin-bottom: 5px;
+}
+
+.characteristic-section {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.characteristic-box {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.characteristic-box h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.characteristic-box p {
+  margin-bottom: 5px;
+}
+
+.lucky-numbers-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.lucky-numbers-section h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.lucky-numbers-section p {
+  margin-bottom: 5px;
+}
+
+.result-section[data-number="1"] {
+  background-color: red;
+  color: white;
+}
+
+.result-section[data-number="2"] {
+  background-color: blue;
+  color: white;
+}
+
+.result-section[data-number="3"] {
+  background-color: yellow;
+  color: black;
+}
+
+.result-section[data-number="4"] {
+  background-color: green;
+  color: white;
+}
+
+/* Add more CSS rules for other numbers/colors as needed */
+
+/* Continue with your existing CSS code */
 
