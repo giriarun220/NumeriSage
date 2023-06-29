@@ -1,128 +1,177 @@
-document.getElementById('numerologyForm').addEventListener('submit', function(event) {
-   event.preventDefault(); // Prevent form submission
-
-   // Retrieve user input
-   const name = document.getElementById('nameInput').value;
-   const birthdate = document.getElementById('birthdateInput').value;
-
-   // Perform calculations and display results
-   const destinyNumber = calculateDestinyNumber(birthdate);
-   const lifePathNumber = calculateLifePathNumber(birthdate);
-   const soulUrgeNumber = calculateSoulUrgeNumber(name);
-
-   const resultsContainer = document.getElementById('results');
-   resultsContainer.innerHTML = `
-      <h2>Results</h2>
-      <p><strong>Destiny Number:</strong> ${destinyNumber}</p>
-      <p><strong>Life Path Number:</strong> ${lifePathNumber}</p>
-      <p><strong>Soul Urge Number:</strong> ${soulUrgeNumber}</p>
-   `;
-
-   const numberDetailsContainer = document.getElementById('numberDetails');
-   numberDetailsContainer.innerHTML = `
-      <h2>Number Details</h2>
-      <p>${getNumberExplanation(destinyNumber)}</p>
-      <p>${getNumberExplanation(lifePathNumber)}</p>
-      <p>${getNumberExplanation(soulUrgeNumber)}</p>
-   `;
+document.getElementById('calculator-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  // Get user input
+  var name = document.getElementById('name').value.trim();
+  var birthdate = document.getElementById('birthdate').value;
+  
+  // Calculate life path number, destiny number, soul urge number, and birth number
+  var lifePathNumber = calculateLifePathNumber(birthdate);
+  var destinyNumber = calculateDestinyNumber(name);
+  var soulUrgeNumber = calculateSoulUrgeNumber(name);
+  var birthNumber = calculateBirthNumber(birthdate);
+  
+  // Calculate lucky numbers
+  var luckyNumbers = calculateLuckyNumbers(lifePathNumber, destinyNumber, soulUrgeNumber, birthNumber);
+  
+  // Display the results
+  var results = document.getElementById('results');
+  results.innerHTML = '<div class="result-section">' +
+                      '<h2>Results</h2>' +
+                      '<p>Your Life Path Number: ' + lifePathNumber + '</p>' +
+                      '<p>Your Destiny Number: ' + destinyNumber + '</p>' +
+                      '<p>Your Soul Urge Number: ' + soulUrgeNumber + '</p>' +
+                      '<p>Your Birth Number: ' + birthNumber + '</p>' +
+                      '</div>';
+  
+  // Display numbers' characteristics
+  var characteristicSection = document.createElement('div');
+  characteristicSection.classList.add('characteristic-section');
+  
+  var numbersCharacteristics = getNumbersCharacteristics();
+  numbersCharacteristics.forEach(function(characteristic) {
+    if (characteristic.number === lifePathNumber || characteristic.number === destinyNumber || characteristic.number === soulUrgeNumber || characteristic.number === birthNumber) {
+      var characteristicBox = document.createElement('div');
+      characteristicBox.classList.add('characteristic-box');
+      characteristicBox.innerHTML = '<h3>Number ' + characteristic.number + '</h3>' +
+                                    '<p>' + characteristic.description + '</p>';
+      characteristicSection.appendChild(characteristicBox);
+    }
+  });
+  
+  results.appendChild(characteristicSection);
+  
+  // Display lucky numbers
+  var luckyNumbersSection = document.createElement('div');
+  luckyNumbersSection.classList.add('lucky-numbers-section');
+  luckyNumbersSection.innerHTML = '<h3>Your Lucky Numbers</h3>' +
+                                  '<p>' + luckyNumbers.join(', ') + '</p>';
+  
+  results.appendChild(luckyNumbersSection);
 });
 
-// Functions to perform numerology calculations
-function calculateDestinyNumber(birthdate) {
-   // Remove dashes from the birthdate (e.g., "1990-05-21" becomes "1990521")
-   const cleanDate = birthdate.replace(/-/g, '');
-
-   // Sum all the digits of the cleaned birthdate
-   let sum = 0;
-   for (let i = 0; i < cleanDate.length; i++) {
-      sum += parseInt(cleanDate.charAt(i));
-   }
-
-   // Reduce the sum to a single-digit number
-   while (sum > 9) {
-      sum = reduceToSingleDigit(sum);
-   }
-
-   return sum;
+function calculateLifePathNumber(birthdate) {
+  // Calculate and return the life path number
+  var dateParts = birthdate.split('-');
+  var day = parseInt(dateParts[2]);
+  var month = parseInt(dateParts[1]);
+  var year = parseInt(dateParts[0]);
+  
+  var lifePathNumber = calculateNumber(day) + calculateNumber(month) + calculateNumber(year);
+  
+  while (lifePathNumber > 9) {
+    lifePathNumber = calculateNumber(lifePathNumber);
+  }
+  
+  return lifePathNumber;
 }
 
-function calculateLifePathNumber(birthdate) {
-   // Extract the numeric digits from the birthdate
-   const digits = birthdate.match(/\d/g);
-   if (!digits) {
-      return "Invalid birthdate";
-   }
-
-   // Calculate the destiny number first
-   const destinyNumber = calculateDestinyNumber(birthdate);
-
-   // Sum the individual digits of the birthdate
-   let sum = 0;
-   for (let i = 0; i < digits.length; i++) {
-      sum += parseInt(digits[i]);
-   }
-
-   // Reduce the sum to a single-digit number
-   let lifePathNumber = sum;
-   while (lifePathNumber > 9) {
-      lifePathNumber = reduceToSingleDigit(lifePathNumber);
-   }
-
-   // Calculate the final life path number by adding the destiny number
-   lifePathNumber += destinyNumber;
-   lifePathNumber = reduceToSingleDigit(lifePathNumber);
-
-   return lifePathNumber;
+function calculateDestinyNumber(name) {
+  // Calculate and return the destiny number
+  var nameValue = 0;
+  
+  for (var i = 0; i < name.length; i++) {
+    if (name[i] !== ' ') {
+      nameValue += getAlphabetValue(name[i]);
+    }
+  }
+  
+  var destinyNumber = calculateNumber(nameValue);
+  
+  while (destinyNumber > 9) {
+    destinyNumber = calculateNumber(destinyNumber);
+  }
+  
+  return destinyNumber;
 }
 
 function calculateSoulUrgeNumber(name) {
-   // Convert name to uppercase and remove any spaces
-   const cleanName = name.toUpperCase().replace(/\s/g, '');
-
-   // Assign numerical values to each letter
-   const letterValues = {
-      A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9, J: 1, K: 2, L: 3, M: 4,
-      N: 5, O: 6, P: 7, Q: 8, R: 9, S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
-   };
-
-   // Calculate the soul urge number by summing the values of each letter
-   let sum = 0;
-   for (let i = 0; i < cleanName.length; i++) {
-      sum += letterValues[cleanName.charAt(i)];
-   }
-
-   // Reduce the soul urge number to a single-digit number
-   sum = reduceToSingleDigit(sum);
-
-   return sum;
+  // Calculate and return the soul urge number
+  var vowels = ['a', 'e', 'i', 'o', 'u'];
+  var nameValue = 0;
+  
+  for (var i = 0; i < name.length; i++) {
+    if (vowels.includes(name[i].toLowerCase())) {
+      nameValue += getAlphabetValue(name[i]);
+    }
+  }
+  
+  var soulUrgeNumber = calculateNumber(nameValue);
+  
+  while (soulUrgeNumber > 9) {
+    soulUrgeNumber = calculateNumber(soulUrgeNumber);
+  }
+  
+  return soulUrgeNumber;
 }
 
-function reduceToSingleDigit(number) {
-   // Keep reducing the number until it becomes a single-digit
-   while (number > 9) {
-      let sum = 0;
-      while (number > 0) {
-         sum += number % 10;
-         number = Math.floor(number / 10);
-      }
-      number = sum;
-   }
-   return number;
+function calculateBirthNumber(birthdate) {
+  // Calculate and return the birth number
+  var dateParts = birthdate.split('-');
+  var day = parseInt(dateParts[2]);
+  
+  var birthNumber = calculateNumber(day);
+  
+  while (birthNumber > 9) {
+    birthNumber = calculateNumber(birthNumber);
+  }
+  
+  return birthNumber;
 }
 
-// Function to provide a brief explanation of a numerology number
-function getNumberExplanation(number) {
-   const explanations = {
-      1: "You are a natural-born leader. You possess strong willpower and determination.",
-      2: "You have a nurturing and diplomatic nature. Cooperation and balance are important to you.",
-      3: "You are creative, expressive, and enjoy socializing. You have a natural charm.",
-      4: "You are practical, disciplined, and hardworking. You value stability and order.",
-      5: "You seek adventure, freedom, and change. You are versatile and adaptable.",
-      6: "You are a caring and responsible person. Family and community are essential to you.",
-      7: "You have a deep interest in spirituality and introspection. You value knowledge and wisdom.",
-      8: "You possess ambition, authority, and financial acumen. You strive for success and material abundance.",
-      9: "You are compassionate, generous, and idealistic. You have a strong sense of justice and empathy."
-   };
+function calculateNumber(value) {
+  // Calculate the single digit number from the given value
+  var sum = 0;
+  
+  while (value > 0) {
+    sum += value % 10;
+    value = Math.floor(value / 10);
+  }
+  
+  return sum;
+}
 
-   return explanations[number] || "No information available for this number.";
+function getAlphabetValue(char) {
+  // Get the numerical value of an alphabet character
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  char = char.toLowerCase();
+  
+  return alphabet.indexOf(char) + 1;
+}
+
+function getNumbersCharacteristics() {
+  // Define characteristics for each number
+  var characteristics = [
+    { number: 1, description: 'Leadership, independence, and ambition are key traits of Number 1. They are assertive and determined individuals.' },
+    { number: 2, description: 'Number 2 represents harmony, cooperation, and diplomacy. They are compassionate and have a talent for nurturing relationships.' },
+    { number: 3, description: 'Creativity, self-expression, and joy define Number 3. They are lively individuals with a natural ability to entertain and inspire.' },
+    { number: 4, description: 'Number 4 symbolizes stability, practicality, and hard work. They are disciplined and dependable individuals with a strong sense of responsibility.' },
+    { number: 5, description: 'Number 5 represents freedom, adventure, and versatility. They have a restless spirit and embrace change and diversity.' },
+    { number: 6, description: 'Number 6 symbolizes harmony, balance, and nurturing. They are responsible and caring individuals who thrive in domestic and community settings.' },
+    { number: 7, description: 'Intellectual pursuits, spirituality, and introspection define Number 7. They are analytical thinkers and have a deep thirst for knowledge and understanding.' },
+    { number: 8, description: 'Number 8 represents success, abundance, and material wealth. They have strong leadership qualities and are driven to achieve their goals.' },
+    { number: 9, description: 'Number 9 symbolizes compassion, idealism, and selflessness. They have a humanitarian nature and are dedicated to making a positive impact in the world.' }
+  ];
+  
+  return characteristics;
+}
+
+function calculateLuckyNumbers(lifePathNumber, destinyNumber, soulUrgeNumber, birthNumber) {
+  // Calculate and return the lucky numbers based on the given numbers
+  var luckyNumbers = [];
+  
+  if (lifePathNumber > 0) {
+    luckyNumbers.push(lifePathNumber);
+  }
+  if (destinyNumber > 0 && destinyNumber !== lifePathNumber) {
+    luckyNumbers.push(destinyNumber);
+  }
+  if (soulUrgeNumber > 0 && soulUrgeNumber !== lifePathNumber && soulUrgeNumber !== destinyNumber) {
+    luckyNumbers.push(soulUrgeNumber);
+  }
+  if (birthNumber > 0 && birthNumber !== lifePathNumber && birthNumber !== destinyNumber && birthNumber !== soulUrgeNumber) {
+    luckyNumbers.push(birthNumber);
+  }
+  
+  return luckyNumbers;
 }
